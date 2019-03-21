@@ -1,6 +1,6 @@
 <img src="LOGO.svg" height="128">
 
-# Socketify
+# BrConnector
 
 > TCP and UDP Sockets API on Chrome, Firefox and Safari desktop browsers with extensions via native messaging.
 
