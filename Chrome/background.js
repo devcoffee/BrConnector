@@ -1,86 +1,32 @@
-var messengerPorts = {};
+/* background.js */
 
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-    if (changeInfo.status !== "complete" || !tab.url.startsWith("file:///")) {
-        return;
-    }
+/**
+ * Listens to the content (content.js), takes its data, passes it 
+ * to the native app and afterwards returns response data to the 
+ * content. 
+ */
+chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
+    console.info("Received %o from %o, frame", msg, sender.tab, sender.frameId);
+	
+	// As it is registered in registy
+	var host_name = 'br.com.devcoffee.native_messaging';
+	
+	// Open port (for communication).
+	var port = chrome.runtime.connectNative(host_name);
+	
+	// Send message to native application.
+	port.postMessage(msg);
 
-    chrome.tabs.executeScript(tabId, { file: "content.js" });
+	// Listen for response...
+	port.onMessage.addListener(function (msg) {
+		// Send data to the content.
+		chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+			chrome.tabs.sendMessage(tabs[0].id, msg, function (response) { });
+		});
+	});
+
+	port.onDisconnect.addListener(function () {
+		console.info("Disconnected.");
+	});
 });
 
-function disconnectTabPorts(tabPorts) {
-    for (var id in tabPorts) {
-        var port = tabPorts[id];
-        if (!port) {
-            continue;
-        }
-
-        port.disconnect();
-        delete tabPorts[id];
-    }
-}
-
-chrome.tabs.onRemoved.addListener(function (tabId, removeInfo) {
-    var tabPorts = messengerPorts[tabId];
-    if (!tabPorts) {
-        return;
-    }
-
-    disconnectTabPorts(tabPorts);
-    delete messengerPorts[tabId];
-});
-
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-    if (!sender.tab) {
-        return;
-    }
-
-    var tabId = sender.tab.id;
-
-    var tabPorts = messengerPorts[tabId];
-    if (!tabPorts) {
-        tabPorts = {};
-        messengerPorts[tabId] = tabPorts;
-    } else if (message.init) {
-        disconnectTabPorts(tabPorts);
-    }
-
-    var id = message.id;
-    if (!id) {
-        return;
-    }
-
-    var port = tabPorts[id];
-    if (!port) {
-        if (message._msg.event === "open-udpPeer" ||
-            message._msg.event === "open-tcpServer" ||
-            message._msg.event === "open-tcpClient") {
-            tabPorts[id] = port = chrome.runtime.connectNative("net.socketify.messenger");
-            port.onDisconnect.addListener(function () {
-                delete tabPorts[id];
-            });
-            port.onMessage.addListener(function (message) {
-                if (message.payload) {
-                    message.payload = JSON.parse(message.payload)
-                }
-
-                chrome.tabs.sendMessage(tabId, {
-                    id: id,
-                    _msg: message
-                });
-            });
-
-            port.postMessage({
-                event: message._msg.event,
-                address: message._msg.address
-            });
-        }
-        return;
-    }
-
-    port.postMessage({
-        event: message._msg.event,
-        address: message._msg.address,
-        payload: JSON.stringify(message._msg.payload)
-    });
-});

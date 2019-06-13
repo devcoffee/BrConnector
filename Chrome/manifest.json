@@ -1,42 +1,27 @@
 {
-    "name": "Socketify",
-    "description": "TCP and UDP Sockets API",
-    "version": "1.0",
-    "icons": {
-        "16": "icon.png",
-        "48": "icon.png",
-        "96": "icon.png",
-        "128": "icon.png"
-    },
-    "browser_action": {
-        "default_icon": "icon.png"
-    },
-    "background": {
-        "scripts": [
-            "background.js"
-        ],
-        "persistent": true
-    },
-    "permissions": [
-        "nativeMessaging",
-        "tabs",
-        "*://*/*",
-        "<all_urls>"
-    ],
-    "content_scripts": [
-        {
-            "matches": [
-                "*://*/*"
-            ],
-            "js": [
-                "content.js"
-            ],
-            "run_at": "document_start",
-            "all_frames": true
-        }
-    ],
-    "web_accessible_resources": [
-        "socketify.js"
-    ],
-    "manifest_version": 2
+  // Extension ID: knldjmfmopnpolahpmmgbagdohdnhkik
+  "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDcBHwzDvyBQ6bDppkIs9MP4ksKqCMyXQ/A52JivHZKh4YO/9vJsT3oaYhSpDCE9RPocOEQvwsHsFReW2nUEc6OLLyoCFFxIb7KkLGsmfakkut/fFdNJYh0xOTbSN8YvLWcqph09XAY2Y/f0AL7vfO1cuCqtkMt8hFrBGWxDdf9CQIDAQAB",
+  "name": "BrConnector",
+  "version": "1.4.1",
+  "manifest_version": 2,
+  "description": "API para comunicação TCP e UDP utilizada no BrERP para integração com Balanças e outros periféricos.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "nativeMessaging"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.brerp.com.br/*", "*://*.devcoffee.com.br/*"],
+      "js": ["content.js"]
+    }
+  ]
 }

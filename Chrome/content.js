@@ -1,22 +1,31 @@
-var script = document.createElement("script");
-script.src = chrome.extension.getURL("socketify.js");
-document.documentElement.appendChild(script);
+/* content.js */
 
-window.addEventListener("message", function (event) {
-    if (event.source !== window || event.data._tab.dir !== "socketify-outbound") {
-        return;
-    }
-
-    chrome.runtime.sendMessage(event.data._tab._ext);
-}, false);
-
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-    window.postMessage({
-        _tab: {
-            dir: "socketify-inbound",
-            _ext: message
-        }
-    }, "*");
+/**
+ * Send message event listener
+ * 
+ * Client dispatches 'send-message-event' event with data object. 
+ * Then the data object is sent to background script.
+ */
+document.addEventListener("send-message-event", function (data) {
+	var request = data.detail.data;
+	console.info(request);
+	// Send message to the background script
+	chrome.runtime.sendMessage(request, null);
 });
 
-chrome.runtime.sendMessage({ init: true });
+/**
+ * Listens to the background script and dispatches 'get-message-event' 
+ * to the client when the data is received.
+ */
+chrome.runtime.onMessage.addListener(function (response, sender, sendResponse) {
+	console.info(response);
+	// Send response to the front page
+	var event = new CustomEvent("get-message-event", {
+		detail: {
+			data: response
+		},
+		bubbles: true,
+		cancelable: true
+	});
+	document.dispatchEvent(event);
+});
