@@ -13,15 +13,19 @@
 			<div class="col-md-4"></div>
 			<div class="col-md-4">
 				<div class="page-header">
-					<h2>Native Messaging</h2>
+					<h2>Devcoffee Native Messaging - BrConnector</h2>
 				</div>
 				<div class="form-group">
-					<label for="input-text">Input message:</label>
-					<input class="form-control" id='input-text' type='text' value="Vakho" />
+					<label for="input-text">Tipo Conexao:</label>
+					<input class="form-control" id='input-contype' type='text' value="TCP ou TCPL ou SERIALL" />
+					<label for="input-text">Endereco Conexao:</label>
+					<input class="form-control" id='input-address' type='text' value="192.168.0.96 ou COM3" />
+					<label for="input-text">Porta ou Velocidade Conexao:</label>
+					<input class="form-control" id='input-addrport' type='text' value="8080 ou 9600" />
 				</div>
-				<button type="button" class="btn btn-block btn-default" id='send-message-button'>Send Message</button>
+				<button type="button" class="btn btn-block btn-default" id='send-message-button'>Obter Retorno</button>
 				<hr>
-				<div class="well well-lg" id='response'>Output goes here...</div>
+				<div class="well well-lg" id='response'>O retorno sera exibido aqui...</div>
 			</div>
 			<div class="col-md-4"></div>
 		</div>
