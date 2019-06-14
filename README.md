@@ -1,6 +1,7 @@
 <img src="https://devcoffee.com.br/wp-content/uploads/2019/05/novo-logo-devcoffee.png" height="128"> 
 
-# BrConnector
+# BrConnector <img src="icon128.png" height="128"> 
+
 
 > API para comunicação TCP e UDP utilizada no BrERP para integração com Balanças e outros periféricos..
 
