@@ -16,13 +16,15 @@ Em seguida instale a Extensão.
 
 ## 2- Instalar o Cliente Nativo na Máquina Local 
 
-Para instalar o cliente nativo na Máquina Local são necessários 3 arquivos:
+Para instalar o cliente nativo na Máquina Local são necessários 4 arquivos:
 
 1- BrConnector.jar
 
 2- BrConnector.bat
 
 3- BrConnector.reg
+
+4- manifest.json
 
 ### Windows
 
