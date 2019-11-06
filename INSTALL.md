@@ -17,15 +17,19 @@ Em seguida instale a Extensão.
 ## 2- Instalar o Cliente Nativo na Máquina Local 
 
 Para instalar o cliente nativo na Máquina Local são necessários 3 arquivos:
+
 1- BrConnector.jar
+
 2- BrConnector.bat
+
 3- BrConnector.reg
 
 ### Windows
 
 A fim de facilitar a instalação recomenda-se criar uma pasta na Raiz do Disco C: chamada "Balanca"
 Colocar os arquivos mencionados acima dentro da pasta Criada
-* Cado tenha colocado os Arquivos citados anteriormente em um local diferente do recomendado é necessário atualizar o conteúdo dos arquivos BrConnector.bat e BrConnector.reg com o novo caminho.
+
+* Caso tenha colocado os Arquivos citados anteriormente em um local diferente do recomendado é necessário atualizar o conteúdo dos arquivos BrConnector.bat e BrConnector.reg com o novo caminho.
 Após verificados os caminhos, execute o arquivo BrConnector.reg para Registrar o cliente nativo.
 
 ## 3- Configurar a comunicação com o dispositivo desejado no BrERP
