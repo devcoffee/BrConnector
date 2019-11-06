@@ -26,6 +26,8 @@ Para instalar o cliente nativo na Máquina Local são necessários 4 arquivos:
 
 4- manifest.json
 
+* Os arquivos mencionados acima podem ser encontrados na Pasta instalador deste repositório, com exceção do BrConnector.jar que deve ser compilado a partir do conteúdo da pasta messenger.
+
 ### Windows
 
 A fim de facilitar a instalação recomenda-se criar uma pasta na Raiz do Disco C: chamada "Balanca"
