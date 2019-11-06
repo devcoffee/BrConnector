@@ -17,6 +17,6 @@
 - [x] Native Messaging Host
 - [x] Chrome Extension
 - [ ] Firefox Porting
-- [ ] Installation Guides
+- [x] Installation Guides
 - [ ] API Documentation
 - [ ] Host App Installer
