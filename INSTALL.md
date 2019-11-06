@@ -27,6 +27,7 @@ Para instalar o cliente nativo na Máquina Local são necessários 3 arquivos:
 ### Windows
 
 A fim de facilitar a instalação recomenda-se criar uma pasta na Raiz do Disco C: chamada "Balanca"
+
 Colocar os arquivos mencionados acima dentro da pasta Criada
 
 * Caso tenha colocado os Arquivos citados anteriormente em um local diferente do recomendado é necessário atualizar o conteúdo dos arquivos BrConnector.bat e BrConnector.reg com o novo caminho.
@@ -35,6 +36,7 @@ Após verificados os caminhos, execute o arquivo BrConnector.reg para Registrar 
 ## 3- Configurar a comunicação com o dispositivo desejado no BrERP
 
 Abra a Janela de Equipamento de Pesagem para configurar o endereço e porta de conexão a balança.
+
 Siga as instruções contidas na Tela para o Correto preenchimento.
 
 # Conclusão 
