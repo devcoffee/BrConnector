@@ -1,6 +1,6 @@
 # Pré Requisitos
-Java instalado na máquina local ( 32 Bits para utilização de balanças Líder )
-Navegador compatível com a Extensão (Chrome ou Firefox)
+Java instalado na máquina local ( 32 Bits para utilização de balanças Líder - descontinuada )
+Navegador compatível com a Extensão (Chrome)
 
 # Guia de Instalação 
 
