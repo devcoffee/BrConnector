@@ -69,7 +69,7 @@ public class Main {
 
 	                retVal.append((char) byteRead);
 	                if (retVal.length() % 26 == 0) {
-	                	response.setMessage(response.toString());
+	                	response.setMessage(retVal.toString());
 	                    retVal.setLength(0);
 	                }
 	            }
