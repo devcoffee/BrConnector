@@ -50,9 +50,9 @@ public class Main {
 				response.setMessage("Erro (TCP) - " + e.getMessage());
 			}
 		} else if (request.getContype().equals("TCPB")) {
-			
+			Socket socket = null;
 			try {
-				Socket socket = new Socket(request.getAddress(), request.getAddrport());
+				socket = new Socket(request.getAddress(), request.getAddrport());
 				InputStream in = socket.getInputStream();
 
 	            int byteRead;
@@ -74,10 +74,15 @@ public class Main {
 	                    break;
 	                }
 	            }
-	            socket.close();
 	        } catch (Exception e) {
 				response.setMessage("Erro (TCPB) - " + e.getMessage());
-	        } 
+	        } finally {
+	            try {
+	                socket.close();
+	            } catch (Exception e) {
+					response.setMessage("Erro (TCPB) - " + e.getMessage());
+	            }
+	        }
 
 		} else if (request.getContype().equals("FILE")) {
 			BufferedReader reader = null;
