@@ -74,9 +74,8 @@ public class Main {
 	                }
 	            }
 	            
-	            in.close();
 				socket.close();
-	        } catch (IOException e) {
+	        } catch (Exception e) {
 				response.setMessage("Erro (TCPB) - " + e.getMessage());
 	        } 
 
