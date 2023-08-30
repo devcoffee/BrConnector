@@ -1,6 +1,9 @@
 package br.com.devcoffee.native_messaging.main;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,9 +23,13 @@ public class Main {
 
 		// Read message
 		String requestJson = readMessage(System.in);
+        String outputPath = "C:/Balanca/log.txt";
+
 
 		ObjectMapper mapper = new ObjectMapper();
 		NativeRequest request = mapper.readValue(requestJson, NativeRequest.class);
+        BufferedWriter out = new BufferedWriter(new FileWriter(outputPath));
+
 
 		// Process request...
 		NativeResponse response = new NativeResponse();
@@ -38,6 +45,8 @@ public class Main {
 					clientSocket.close();
 					if (line != null) {
 						response.setMessage(line);
+		                out.write(line);
+
 					} else {
 						response.setMessage("Erro ao Coletar Peso");
 					}
@@ -47,6 +56,57 @@ public class Main {
 
 			} catch (IOException e) {
 				response.setMessage("Erro ao Coletar Peso");
+			}
+		} else if (request.getContype().equals("TCPB")) {
+			 try {
+		            Socket socket = new Socket(request.getAddress(), request.getAddrport());
+		            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+		            char[] buffer = new char[1024];
+		            int bytesRead;
+		            while ((bytesRead = in.read(buffer)) != -1) {
+		                String data = new String(buffer, 0, bytesRead);
+		                
+		                if (data != null) {
+							response.setMessage(data);
+							break;
+						} else {
+							response.setMessage("Erro ao Coletar Peso - TCPB");
+						}
+		            }
+
+		            in.close();
+		            socket.close();
+		        } catch (IOException | InterruptedException e) {
+					response.setMessage("Erro ao Coletar Peso - TCP2");
+		        }
+		} else if (request.getContype().equals("FILE")) {
+			BufferedReader reader = null;
+
+			try {
+				reader = new BufferedReader(new FileReader(request.getAddress()));
+				String line;
+
+				while ((line = reader.readLine()) != null) {
+					if (line != null) {
+						response.setMessage(line);
+						break;
+					} else {
+						response.setMessage("Erro ao Coletar Peso - TCP2");
+					}
+					Thread.sleep(1000); // espera 1 segundo
+				}
+
+			} catch (IOException | InterruptedException e) {
+				response.setMessage("Erro ao Coletar Peso - FILE" + e.getMessage());
+			} finally {
+				try {
+					if (reader != null) {
+						reader.close();
+					}
+				} catch (IOException e) {
+					response.setMessage("Erro ao Coletar Peso - FILE" + e.getMessage());
+				}
 			}
 		} else if (request.getContype().equals("TCPL")) {
 			if (System.getProperty("sun.arch.data.model").equals("64")) {
@@ -91,6 +151,9 @@ public class Main {
 		// Send response message back
 		String responseJson = mapper.writeValueAsString(response);
 		sendMessage(responseJson);
+		
+        out.close();
+
 
 		System.exit(0);
 	}
