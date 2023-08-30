@@ -54,7 +54,7 @@ public class Main {
 					response.setMessage("Falha ao Conectar a Balanca (TCP Simples)");
 				}
 
-			} catch (IOException e) {
+			} catch (Exception e) {
 				response.setMessage("Erro ao Coletar Peso");
 			}
 		} else if (request.getContype().equals("TCPB")) {
@@ -77,7 +77,7 @@ public class Main {
 
 		            in.close();
 		            socket.close();
-		        } catch (IOException | InterruptedException e) {
+		        } catch (Exception e) {
 					response.setMessage("Erro ao Coletar Peso - TCP2");
 		        }
 		} else if (request.getContype().equals("FILE")) {
@@ -97,14 +97,14 @@ public class Main {
 					Thread.sleep(1000); // espera 1 segundo
 				}
 
-			} catch (IOException | InterruptedException e) {
+			} catch (Exception e) {
 				response.setMessage("Erro ao Coletar Peso - FILE" + e.getMessage());
 			} finally {
 				try {
 					if (reader != null) {
 						reader.close();
 					}
-				} catch (IOException e) {
+				} catch (Exception e) {
 					response.setMessage("Erro ao Coletar Peso - FILE" + e.getMessage());
 				}
 			}
