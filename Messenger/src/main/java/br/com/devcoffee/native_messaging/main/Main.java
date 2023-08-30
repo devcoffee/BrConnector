@@ -53,10 +53,10 @@ public class Main {
 			
 			try {
 				Socket socket = new Socket(request.getAddress(), request.getAddrport());
-				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				InputStream in = socket.getInputStream();
 
 	            int byteRead;
-	            StringBuilder retVal = new StringBuilder();
+	            StringBuilder strRet = new StringBuilder();
 	            while (true) {
 	                byteRead = in.read();
 	                if (byteRead == -1) {
@@ -64,17 +64,15 @@ public class Main {
 	                }
 	                
 	                if (byteRead == 32) {
-	                	retVal.setLength(0);
+	                	strRet.setLength(0);
 	                }
 
-	                retVal.append((char) byteRead);
-	                if (retVal.length() % 26 == 0) {
-	                	response.setMessage(retVal.toString());
-	                    retVal.setLength(0);
+	                strRet.append((char) byteRead);
+	                if (strRet.length() % 26 == 0) {
+	                	response.setMessage(strRet.toString());
+	                    strRet.setLength(0);
 	                }
 	            }
-	            
-				socket.close();
 	        } catch (Exception e) {
 				response.setMessage("Erro (TCPB) - " + e.getMessage());
 	        } 
