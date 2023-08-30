@@ -56,13 +56,15 @@ public class Main {
 
 				char[] buffer = new char[1024];
 				int bytesRead;
+				String data = null;
 				while ((bytesRead = in.read(buffer)) != -1) {
-					String data = new String(buffer, 0, bytesRead);
-
-					if (data != null) {
-						response.setMessage(data);
-						break;
-					}
+					data = new String(buffer, 0, bytesRead);
+				}
+				
+				if (data != null) {
+					response.setMessage(data);
+				} else {
+					response.setMessage("Erro ao realizar leitura (TCPB)");
 				}
 
 				in.close();
