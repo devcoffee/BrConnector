@@ -71,8 +71,10 @@ public class Main {
 	                if (strRet.length() % 26 == 0) {
 	                	response.setMessage(strRet.toString());
 	                    strRet.setLength(0);
+	                    break;
 	                }
 	            }
+	            socket.close();
 	        } catch (Exception e) {
 				response.setMessage("Erro (TCPB) - " + e.getMessage());
 	        } 
