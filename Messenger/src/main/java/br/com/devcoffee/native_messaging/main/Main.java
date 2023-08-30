@@ -1,9 +1,7 @@
 package br.com.devcoffee.native_messaging.main;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,13 +21,9 @@ public class Main {
 
 		// Read message
 		String requestJson = readMessage(System.in);
-        String outputPath = "C:/Balanca/log.txt";
-
 
 		ObjectMapper mapper = new ObjectMapper();
 		NativeRequest request = mapper.readValue(requestJson, NativeRequest.class);
-        BufferedWriter out = new BufferedWriter(new FileWriter(outputPath));
-
 
 		// Process request...
 		NativeResponse response = new NativeResponse();
@@ -45,41 +39,37 @@ public class Main {
 					clientSocket.close();
 					if (line != null) {
 						response.setMessage(line);
-		                out.write(line);
-
 					} else {
-						response.setMessage("Erro ao Coletar Peso");
+						response.setMessage("Erro ao realizar leitura (TCP)");
 					}
 				} else {
-					response.setMessage("Falha ao Conectar a Balanca (TCP Simples)");
+					response.setMessage("Falha ao Conectar (TCP)");
 				}
 
 			} catch (Exception e) {
-				response.setMessage("Erro ao Coletar Peso");
+				response.setMessage("Erro (TCP) - " + e.getMessage());
 			}
 		} else if (request.getContype().equals("TCPB")) {
-			 try {
-		            Socket socket = new Socket(request.getAddress(), request.getAddrport());
-		            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			try {
+				Socket socket = new Socket(request.getAddress(), request.getAddrport());
+				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-		            char[] buffer = new char[1024];
-		            int bytesRead;
-		            while ((bytesRead = in.read(buffer)) != -1) {
-		                String data = new String(buffer, 0, bytesRead);
-		                
-		                if (data != null) {
-							response.setMessage(data);
-							break;
-						} else {
-							response.setMessage("Erro ao Coletar Peso - TCPB");
-						}
-		            }
+				char[] buffer = new char[1024];
+				int bytesRead;
+				while ((bytesRead = in.read(buffer)) != -1) {
+					String data = new String(buffer, 0, bytesRead);
 
-		            in.close();
-		            socket.close();
-		        } catch (Exception e) {
-					response.setMessage("Erro ao Coletar Peso - TCP2");
-		        }
+					if (data != null) {
+						response.setMessage(data);
+						break;
+					}
+				}
+
+				in.close();
+				socket.close();
+			} catch (Exception e) {
+				response.setMessage("Erro (TCPB) - " + e.getMessage());
+			}
 		} else if (request.getContype().equals("FILE")) {
 			BufferedReader reader = null;
 
@@ -91,27 +81,24 @@ public class Main {
 					if (line != null) {
 						response.setMessage(line);
 						break;
-					} else {
-						response.setMessage("Erro ao Coletar Peso - TCP2");
 					}
-					Thread.sleep(1000); // espera 1 segundo
 				}
 
 			} catch (Exception e) {
-				response.setMessage("Erro ao Coletar Peso - FILE" + e.getMessage());
+				response.setMessage("Erro (FILE) - " + e.getMessage());
 			} finally {
 				try {
 					if (reader != null) {
 						reader.close();
 					}
 				} catch (Exception e) {
-					response.setMessage("Erro ao Coletar Peso - FILE" + e.getMessage());
+					response.setMessage("Erro (FILE) - " + e.getMessage());
 				}
 			}
 		} else if (request.getContype().equals("TCPL")) {
 			if (System.getProperty("sun.arch.data.model").equals("64")) {
 				response.setMessage(
-						"Apenas Java 32 Bits Suportado para este tipo de conexao, consulte o suporte para mais informacoes");
+						"Apenas Java 32 Bits Suportado para este tipo de conexao (TCPL), consulte o suporte para mais informacoes");
 			} else {
 				try {
 					String patch = "Indicador";
@@ -120,16 +107,16 @@ public class Main {
 					if (status) {
 						response.setMessage(ind.getPeso());
 					} else {
-						response.setMessage("Falha ao Conectar a Balanca (TCP Lider)");
+						response.setMessage("Falha ao Conectar (TCPL)");
 					}
 				} catch (Exception e) {
-					response.setMessage(e.getLocalizedMessage());
+					response.setMessage("Erro (TCPL) - " + e.getMessage());
 				}
 			}
 		} else if (request.getContype().equals("SERIALL")) {
 			if (System.getProperty("sun.arch.data.model").equals("64")) {
 				response.setMessage(
-						"Apenas Java 32 Bits Suportado para este tipo de conexao, consulte o suporte para mais informacoes");
+						"Apenas Java 32 Bits Suportado para este tipo de conexao (SERIALL), consulte o suporte para mais informacoes");
 			} else {
 				try {
 					String patch = "Indicador";
@@ -138,22 +125,20 @@ public class Main {
 					if (status) {
 						response.setMessage(ind.getPeso());
 					} else {
-						response.setMessage("Falha ao Conectar a Balanca (Serial Lider)");
+						response.setMessage("Falha ao Conectar (SERIALL)");
 					}
 				} catch (Exception e) {
-					response.setMessage(e.getLocalizedMessage());
+					response.setMessage("Erro (TCPL) - " + e.getMessage());
 				}
 			}
 		} else {
-			response.setMessage("Metodo de Conexao nao suportado, consulte o suporte para mais informacoes");
+			response.setMessage("Metodo de Conexao nao suportado (" + request.getContype()
+					+ ") , consulte o suporte para mais informacoes");
 		}
 
 		// Send response message back
 		String responseJson = mapper.writeValueAsString(response);
 		sendMessage(responseJson);
-		
-        out.close();
-
 
 		System.exit(0);
 	}
