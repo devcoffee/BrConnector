@@ -59,7 +59,7 @@ public class Main {
 			    StringBuilder numericData = new StringBuilder();
 			    while (numericData.length() < 26 && (bytesRead = in.read(buffer)) != -1) {
 			        for (int i = 0; i < bytesRead; i++) {
-			            if (Character.isDigit(buffer[i])) {
+			            if (Character.isDigit(buffer[i]) && !Character.isWhitespace(buffer[i])) {
 			                numericData.append(buffer[i]);
 			                if (numericData.length() == 26) {
 			                    break;
