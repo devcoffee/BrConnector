@@ -50,39 +50,27 @@ public class Main {
 				response.setMessage("Erro (TCP) - " + e.getMessage());
 			}
 		} else if (request.getContype().equals("TCPB")) {
-			Socket socket = null;
 			try {
-				socket = new Socket(request.getAddress(), request.getAddrport());
-				InputStream in = socket.getInputStream();
+	            // Cria um novo socket e o conecta ao endereço IP e à porta especificados
+				Socket socket = new Socket(request.getAddress(), request.getAddrport());
 
-	            int byteRead;
-	            StringBuilder strRet = new StringBuilder();
-	            while (true) {
-	                byteRead = in.read();
-	                if (byteRead == -1) {
-	                    break;
-	                }
-	                
-	                if (byteRead == 32) {
-	                	strRet.setLength(0);
-	                }
+	            // Cria um BufferedReader para ler os dados do InputStream do socket
+	            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-	                strRet.append((char) byteRead);
-	                if (strRet.length() % 26 == 0) {
-	                	response.setMessage(strRet.toString());
-	                    strRet.setLength(0);
-	                    break;
-	                }
+	            // Lê e imprime os dados recebidos
+	            String data;
+	            while ((data = in.readLine()) != null) {
+	            	response.setMessage(data);
 	            }
+
+	            // Fecha o BufferedReader e o socket
+	            in.close();
+	            socket.close();
+
 	        } catch (Exception e) {
 				response.setMessage("Erro (TCPB) - " + e.getMessage());
-	        } finally {
-	            try {
-	                socket.close();
-	            } catch (Exception e) {
-					response.setMessage("Erro (TCPB) - " + e.getMessage());
-	            }
 	        }
+			
 
 		} else if (request.getContype().equals("FILE")) {
 			BufferedReader reader = null;
