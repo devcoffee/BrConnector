@@ -111,22 +111,19 @@ public class Main {
 
 				char[] buffer = new char[1024];
 				int bytesRead;
-				StringBuilder strRet = new StringBuilder();
-				
 				while ((bytesRead = in.read(buffer)) != -1) {
 					String data = new String(buffer, 0, bytesRead);
 
 					if (data != null) {
-						if ()
+						response.setMessage(data);
 						break;
 					}
 				}
-				response.setMessage(data);
-				
+
 				in.close();
 				socket.close();
 			} catch (Exception e) {
-				response.setMessage("Erro (TCPD) - " + e.getMessage());
+				response.setMessage("Erro (TCPB) - " + e.getMessage());
 			}
 		} else if (request.getContype().equals("FILE")) {
 			BufferedReader reader = null;
