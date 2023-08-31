@@ -51,26 +51,36 @@ public class Main {
 			}
 		} else if (request.getContype().equals("TCPB")) {
 			try {
-	            // Cria um novo socket e o conecta ao endereço IP e à porta especificados
-				Socket socket = new Socket(request.getAddress(), request.getAddrport());
+			    Socket socket = new Socket(request.getAddress(), request.getAddrport());
+			    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-	            // Cria um BufferedReader para ler os dados do InputStream do socket
-	            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			    char[] buffer = new char[1024];
+			    int bytesRead;
+			    StringBuilder numericData = new StringBuilder();
+			    while (numericData.length() < 26 && (bytesRead = in.read(buffer)) != -1) {
+			        for (int i = 0; i < bytesRead; i++) {
+			            if (Character.isDigit(buffer[i])) {
+			                numericData.append(buffer[i]);
+			                if (numericData.length() == 26) {
+			                    break;
+			                }
+			            } else {
+			            	numericData = new StringBuilder();
+			            }
+			        }
+			    }
 
-	            // Lê e imprime os dados recebidos
-	            String data;
-	            while ((data = in.readLine()) != null) {
-	            	response.setMessage(data);
-	            }
+			    if (numericData.length() == 26) {
+			        response.setMessage(numericData.toString());
+			    } else {
+			        response.setMessage("Erro ao realizar leitura (TCPB) " + numericData);
+			    }
 
-	            // Fecha o BufferedReader e o socket
-	            in.close();
-	            socket.close();
-
-	        } catch (Exception e) {
-				response.setMessage("Erro (TCPB) - " + e.getMessage());
-	        }
-			
+			    in.close();
+			    socket.close();
+			} catch (Exception e) {
+			    response.setMessage("Erro (TCPB) - " + e.getMessage());
+			}
 
 		} else if (request.getContype().equals("FILE")) {
 			BufferedReader reader = null;
