@@ -81,7 +81,53 @@ public class Main {
 			} catch (Exception e) {
 			    response.setMessage("Erro (TCPB) - " + e.getMessage());
 			}
+		} else if (request.getContype().equals("TCPC")) {
+			try {
+				Socket socket = new Socket(request.getAddress(), request.getAddrport());
+				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
+				char[] buffer = new char[1024];
+				int bytesRead;
+				while ((bytesRead = in.read(buffer)) != -1) {
+					String data = new String(buffer, 0, bytesRead);
+					if (data != null) {
+						String[] parts = data.split("\\s+");
+						if (parts.length >= 2) {
+							response.setMessage(parts[1]);
+							break;
+						}
+					}
+				}
+
+				in.close();
+				socket.close();
+			} catch (Exception e) {
+				response.setMessage("Erro (TCPC) - " + e.getMessage());
+			}
+		} else if (request.getContype().equals("TCPD")) {
+			try {
+				Socket socket = new Socket(request.getAddress(), request.getAddrport());
+				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+				char[] buffer = new char[1024];
+				int bytesRead;
+				StringBuilder strRet = new StringBuilder();
+				
+				while ((bytesRead = in.read(buffer)) != -1) {
+					String data = new String(buffer, 0, bytesRead);
+
+					if (data != null) {
+						if ()
+						break;
+					}
+				}
+				response.setMessage(data);
+				
+				in.close();
+				socket.close();
+			} catch (Exception e) {
+				response.setMessage("Erro (TCPD) - " + e.getMessage());
+			}
 		} else if (request.getContype().equals("FILE")) {
 			BufferedReader reader = null;
 
