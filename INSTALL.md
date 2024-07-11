@@ -30,7 +30,7 @@ Para instalar o cliente nativo na Máquina Local são necessários 4 arquivos:
 
 ### Windows
 
-A fim de facilitar a instalação recomenda-se criar uma pasta na Raiz do Disco C: chamada "Balanca"
+A fim de facilitar a instalação recomenda-se criar uma pasta na Raiz do Disco C: chamada "balanca" (Atenção no nome da pasta com carcteres maiúsculos e minúsculos.)
 
 Colocar os arquivos mencionados acima dentro da pasta Criada
 
