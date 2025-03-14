@@ -190,7 +190,11 @@ public class Main {
 			}
 		} else if (request.getContype().equals("TESTE")) {
 			Random random = new Random();
-			response.setMessage(String.valueOf(random.nextDouble()));
+			double min = 1;
+        	double max = 100;
+        	double aleatorio = min + (max - min) * random.nextDouble(); 
+			BigDecimal bd = new BigDecimal(aleatorio).setScale(2, RoundingMode.HALF_UP); 
+			response.setMessage(bd.toString());
 		} else {
 			response.setMessage("Metodo de Conexao nao suportado (" + request.getContype()
 					+ ") , consulte o suporte para mais informacoes");
