@@ -11,6 +11,8 @@ São necessários 3 passos para instalar o Plugin e deixá-lo funcionando.
 Para instalar o plugin no navegador (Chrome), abra a Loja de Extensões e procure por "BrConnector" ou acesse diretamente o link a seguir:
 
 https://chrome.google.com/webstore/detail/brconnector/fekeblkkmkdmoakfdccboinkfinccmbp?hl=pt-BR
+Link indisponível
+Baixar a extensão .crx, clicar a arrastar na pagina de extensão do chrome com ele em modo desenvolvedor
 
 Em seguida instale a Extensão.
 
