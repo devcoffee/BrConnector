@@ -2,7 +2,7 @@
   // Extension ID: knldjmfmopnpolahpmmgbagdohdnhkik
   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDcBHwzDvyBQ6bDppkIs9MP4ksKqCMyXQ/A52JivHZKh4YO/9vJsT3oaYhSpDCE9RPocOEQvwsHsFReW2nUEc6OLLyoCFFxIb7KkLGsmfakkut/fFdNJYh0xOTbSN8YvLWcqph09XAY2Y/f0AL7vfO1cuCqtkMt8hFrBGWxDdf9CQIDAQAB",
   "name": "BrConnector",
-  "version": "1.4.1",
+  "version": "1.4.4",
   "manifest_version": 3,
   "description": "API para comunicação TCP e UDP utilizada no BrERP para integração com Balanças e outros periféricos.",
   "icons": {
