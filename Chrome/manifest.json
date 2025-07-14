@@ -19,7 +19,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*.brerp.com.br/*", "*://*.devcoffee.com.br/*", "*://*.brerp.cloud/*", "*://*.devcoffee.cloud/*","file://*"],
+      "matches": ["*://*.erp.devco.cloud/*", "*://*.brerp.com.br/*", "*://*.devcoffee.com.br/*", "*://*.brerp.cloud/*", "*://*.devcoffee.cloud/*", "file://*"],
       "js": ["content.js"]
     }
   ]
