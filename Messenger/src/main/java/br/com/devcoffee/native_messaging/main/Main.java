@@ -46,8 +46,6 @@ public class Main {
 						isWaitingMessage = false;
 					}
 				}
-
-				clientSocket.close();
 				if (line != null) {
 					response.setMessage(line);
 				} else {
