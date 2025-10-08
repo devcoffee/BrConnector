@@ -33,23 +33,26 @@ public class Main {
 		NativeResponse response = new NativeResponse();
 
 		if (request.getContype().equals("TCP")) {
-			try {
-				Socket clientSocket = new Socket(request.getAddress(), request.getAddrport());
-				if (clientSocket.isConnected()) {
+			try (Socket clientSocket = new Socket(request.getAddress(), request.getAddrport());
 					InputStream is = clientSocket.getInputStream();
-
-					BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-					String line = reader.readLine();
-					clientSocket.close();
-					if (line != null) {
-						response.setMessage(line);
-					} else {
-						response.setMessage("Erro ao realizar leitura (TCP)");
+					BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+				boolean isWaitingMessage = true;
+				String line = null;
+				int maxAttempts = 10;
+				while (isWaitingMessage && maxAttempts > 0) {
+					maxAttempts--;
+					line = reader.readLine();
+					if (line != null && !line.trim().isEmpty()) {
+						isWaitingMessage = false;
 					}
-				} else {
-					response.setMessage("Falha ao Conectar (TCP)");
 				}
 
+				clientSocket.close();
+				if (line != null) {
+					response.setMessage(line);
+				} else {
+					response.setMessage("Erro ao realizar leitura (TCP)");
+				}
 			} catch (Exception e) {
 				response.setMessage("Erro (TCP) - " + e.getMessage());
 			}
